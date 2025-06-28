@@ -1,5 +1,5 @@
 #![allow(unused_imports)]
-use std::{io::Write, net::TcpListener};
+use std::{io::{BufRead, BufReader, Write}, net::TcpListener};
 
 fn main() {
     // You can use print statements as follows for debugging, they'll be visible when running tests.
@@ -14,6 +14,10 @@ fn main() {
             Ok(mut _stream) => {
                 println!("accepted new connection");
                 _stream.write_all("+PONG\r\n".as_bytes()).unwrap();
+                let reader = BufReader::new(_stream.try_clone().unwrap());
+                for line in reader.lines() {
+                    _stream.write_all("+PONG\r\n".as_bytes()).unwrap();
+                }
             }
             Err(e) => {
                 println!("error: {}", e);
