@@ -27,7 +27,7 @@ fn main() {
                     if bytes_read == 0 {
                         break;
                     }
-                    _stream.write_all("+PONK\r\n".as_bytes()).unwrap();
+                    _stream.write_all("+PONG\r\n".as_bytes()).unwrap();
                 }
             }
             Err(e) => {
