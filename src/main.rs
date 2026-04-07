@@ -1,5 +1,8 @@
 #![allow(unused_imports)]
-use std::{io::{BufRead, BufReader, Read, Write}, net::TcpListener};
+use std::{
+    io::{BufRead, BufReader, Read, Write},
+    net::TcpListener,
+};
 
 use bytes::Bytes;
 
@@ -10,7 +13,7 @@ fn main() {
     // Uncomment this block to pass the first stage
     //
     let listener = TcpListener::bind("127.0.0.1:6379").unwrap();
-    
+
     for stream in listener.incoming() {
         match stream {
             Ok(mut _stream) => {
@@ -19,9 +22,9 @@ fn main() {
                 // let reader = BufReader::new(_stream.try_clone().unwrap());
                 loop {
                     let mut buf = [0; 1024];
-                    _stream.read(&mut buf).unwrap();
-                    // println!("received: {}", );
-                    if buf.is_empty() {
+                    let bytes_read = _stream.read(&mut buf).unwrap();
+                    println!("received: {}", bytes_read);
+                    if bytes_read == 0 {
                         break;
                     }
                     _stream.write_all("+PONG\r\n".as_bytes()).unwrap();
